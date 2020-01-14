@@ -1,6 +1,8 @@
 import java.util.*;
 
 public class WideSearch {
+
+  //Создание вершин графа
   private static Top start = new Top("start");
   private static Top top1 = new Top("top1");
   private static Top top2 = new Top("top2");
@@ -9,10 +11,10 @@ public class WideSearch {
   private static Top top5 = new Top("top5");
   private static Top end = new Top("end");
 
-  private static StringBuilder stringToPrint = new StringBuilder();
-
+  //Создание коллекции вершин
   private static List<Top> tops = new ArrayList<>();
 
+  //Создание ребер
   private static Edge start_top1 = new Edge("start -> top1");
   private static Edge top1_top2 = new Edge("top1 -> top2");
   private static Edge top2_end = new Edge("top2 -> end");
@@ -22,6 +24,7 @@ public class WideSearch {
   private static Edge top5_top2 = new Edge("top5 -> top2");
   private static Edge top3_top2 = new Edge("top3 -> top2");
 
+  //Заполнение и связывание вершин и графов между собой
   static {
     start.addEdge(start_top1);
     start.addEdge(start_top4);
@@ -74,24 +77,24 @@ public class WideSearch {
   }
 
   protected static boolean wideSearch() {
-    boolean exist = false;
-    Top topForStep = tops.get(0);
-    if (start.equals(end)) return true;
+    boolean exist = false;                   // флажок об успехе поиска пути
+    Top topForStep = tops.get(0);            // начальная вершина для итерации по коллекции
+    if (start.equals(end)) return true;      // проверка на необходимость алгоритма
 
-    do {
+    do {                                       // перебираем пути пока вершины начала и конца не будут ровны
 
-      for (Top top : tops) {
-        if (top.equals(topForStep)) {
-          for (Edge edge : top.getEdgeList()) {
-            for (Top underTop : edge.getTops()) {
-              if (!underTop.equals(topForStep)) {
-                topForStep = underTop;
-                System.out.println(edge);
+      for (Top top : tops) {                       // начинаем итерацию по вершинам
+        if (top.equals(topForStep)) {              // находим вершину начала
+          for (Edge edge : top.getEdgeList()) {    // перебираем ребра из данной вершины
+            for (Top underTop : edge.getTops()) {  // перебираем вершины ребер
+              if (!underTop.equals(topForStep)) {  // если найдена новая вершина
+                topForStep = underTop;             // меняем начальную вершину
+                System.out.println(edge);          // выводим путь
               }
 
-              if (topForStep.equals(end)) {
-                exist = true;
-                break;
+              if (topForStep.equals(end)) {        // если вершины начала и конца равны значит путь существует
+                exist = true;                      // меняем флажок
+                break;                             // останавливаем поиск
               }
             }
           }
